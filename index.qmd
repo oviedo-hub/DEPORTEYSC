@@ -1,0 +1,1130 @@
+---
+title: "DISTRIBUCIONES DE FRECUENCIAS..."  # Título principal del documento
+subtitle: "TALLER_1"  # Subtítulo del documento
+date: today  # Fecha actual en formato español
+author:  # Información sobre los autores
+  - name: Sebastian Oviedo Rosas<br>Deisy Yanary Miranda<br> Omar Julian Chapid # Nombres de los autores, separados por <br> para salto de línea en HTML
+    affiliation: "Universidad del Tolima"  # Afiliación de los autores (nombre de la universidad)
+    affiliation-url: "https://www.ut.edu.co/"  # URL que lleva a la página web de la universidad
+lang: es  # Idioma del documento, en este caso en español
+title-block-banner: "#540454"
+format:
+  html:  # Formato de salida en HTML
+    page-layout: full  # Configura el diseño de la página para usar el ancho completo
+    fontsize: 14pt  # Tamaño de la fuente del documento (14 puntos)
+    toc: true  # Activa la tabla de contenido
+    toc-location: right  # Ubicación de la tabla de contenido (a la derecha)
+    number-sections: true  # Activa la numeración de las secciones
+    code-fold: true  # Permite ocultar el código, mostrando solo un resumen con "Ver código"
+    code-summary: "Ver código"  # El texto mostrado para los resúmenes de código oculto
+    html-math-method: katex  # Usa Katex para representar las fórmulas matemáticas en HTML
+    smooth-scroll: true  # Activa el desplazamiento suave al navegar por la página
+    link-external-icon: true  # Muestra un ícono en los enlaces externos
+    link-external-newwindow: true  # Los enlaces externos se abren en una nueva ventana
+    citations-hover: true  # Activa el efecto hover (desplegar) en las citas
+    footnotes-hover: true  # Activa el efecto hover (desplegar) en las notas al pie
+    theme: "dark"  # Opción de tema alternativo con mayor contraste
+    highlight-style: "Monokai"  # Resaltado de código con contraste
+    code-overflow: "scroll"  # Controla desbordamiento de código en pantallas pequeñas
+    favicon: "favicon.ico"  # Favicon para el sitio web
+    background-color: "#EDA698"  # Fondo azul baby para todo el documento
+    text-align: justify  # Alineación justificada para el texto
+    color: "#333333"  # Color del texto (gris oscuro para mejorar la legibilidad)
+    link-color: "#3892f8"  # Color de los enlaces (azul)
+    heading-color: "#3892f8"  # Color de los encabezados (azul)
+editor: visual  # Usa el editor visual para la creación del documento en RStudio
+knitr:
+  opts_chunk:  # Opciones predeterminadas para los bloques de código (chunks) de R
+    message: false  # Mostrar mensajes generados por el código
+    warning: false  # Mostrar advertencias si es necesario
+    fig.align: "center"  # Alinea las figuras generadas al centro
+    fig.width: 6  # Ajusta el tamaño de las figuras a 6 unidades
+    fig.height: 6  # Ajusta la altura de las figuras a 6 unidades
+    out.width: "70%"  # Asegura que las figuras se adapten al 70% del ancho disponible
+bibliography: references.bib
+---
+
+```{=html}
+<div style="position: absolute; top: 10px; right: 10px;">
+  <img src="Logo_ut.png" alt="Logo Universidad del Tolima" style="width: 150px; height: auto;">
+</div>
+```
+
+```{=html}
+<style type="text/css">
+  body {
+    font-size: 130%;
+    text-align: justify;
+  }
+</style>
+```
+
+# .Cargar paquetes
+
+```{r}
+ipak <- function(pkg){
+  
+  # Definir repositorio CRAN (evita el error del mirror)
+  options(repos = c(CRAN = "https://cloud.r-project.org"))
+  
+  # Identificar paquetes instalados
+  installed <- rownames(installed.packages())
+  
+  # Identificar paquetes faltantes
+  new.pkg <- setdiff(pkg, installed)
+  
+  # Instalar paquetes faltantes
+  if(length(new.pkg) > 0){
+    install.packages(new.pkg, dependencies = TRUE)
+  }
+  
+  # Cargar paquetes sin mostrar mensajes
+  invisible(lapply(pkg, function(p){
+    suppressPackageStartupMessages(
+      library(p, character.only = TRUE)
+    )
+  }))
+}
+
+# Crear la lista de los paquetes a utilizar
+packages <- c("tidyverse", "kableExtra", "psych", "readxl")
+
+# Instalar y cargar los paquetes del listado anterior
+ipak(packages)
+
+
+```
+
+[@tidyverse; @readxl; @psych; @kableExtra]
+
+# .Introduccion
+
+**Distribución de frecuencias**
+
+**Concepto**
+
+Una **distribución de frecuencias** es una forma de **organizar, resumir y presentar un conjunto de datos** agrupándolos según el número de veces que aparece cada valor o intervalo dentro de un conjunto de observaciones.
+
+Su objetivo principal es **facilitar el análisis e interpretación de los datos**, permitiendo identificar patrones, concentraciones de valores, tendencias y comportamientos dentro de una población o muestra.
+
+Las distribuciones de frecuencias se utilizan principalmente en **estadística descriptiva** y pueden aplicarse a **datos cualitativos o cuantitativos**.
+
+.Elementos de una distribución de frecuencias
+
+Una tabla de distribución de frecuencias generalmente contiene:
+
+1.  **Valores o clases (Xi)**
+2.  **Frecuencia absoluta (fi)**
+3.  **Frecuencia acumulada (Fi)**
+4.  **Frecuencia relativa (hi)**
+5.  **Frecuencia relativa acumulada (Hi)**
+6.  **Marca de clase (cuando hay intervalos)**
+
+**Tipos de frecuencia y fórmulas**
+
+## .Frecuencia absoluta (fi)
+
+Es el **número de veces que aparece un dato** dentro del conjunto de observaciones.
+
+$$
+f_i
+$$
+
+No tiene fórmula específica porque se obtiene **contando cuántas veces aparece cada valor**.
+
+## .Frecuencia absoluta acumulada (Fi)
+
+Es la **suma progresiva de las frecuencias absolutas** hasta una determinada clase o valor.
+
+$$
+F_i = \sum_{j=1}^{i} f_j
+$$
+
+## .Frecuencia relativa (hi)
+
+Representa la **proporción o parte del total que corresponde a una frecuencia absoluta**.
+
+$$
+h_i = \frac{f_i}{N}
+$$
+
+donde:
+
+-   ($f_i$) = frecuencia absoluta
+-   ($N$) = número total de datos
+
+## .Frecuencia relativa acumulada (Hi)
+
+Es la **suma acumulada de las frecuencias relativas**.
+
+$$
+H_i = \frac{F_i}{N}
+$$
+
+o también
+
+$$
+H_i = \sum_{j=1}^{i} h_j
+$$
+
+## .Frecuencia porcentual
+
+Expresa la frecuencia relativa en **porcentaje**.
+
+$$
+% = h_i \times 100
+$$
+
+o
+
+$$
+% = \frac{f_i}{N} \times 100
+$$
+
+**Distribución de frecuencias para datos agrupados**
+
+Cuando los datos son muchos, se **agrupan en intervalos de clase**.
+
+**Número de clases (Regla de Sturges)**
+
+$$
+k = 1 + 3.322 \log_{10}(N)
+$$
+
+donde:
+
+-   ($k$) = número de clases
+-   ($N$) = número total de datos
+
+**Amplitud de clase**
+
+$$
+A = \frac{R}{k}
+$$
+
+donde:
+
+-   ($A$) = amplitud del intervalo
+-   ($R$) = rango
+-   ($k$) = número de clases
+
+**Rango**
+
+$$
+R = X_{max} - X_{min}
+$$
+
+**Marca de clase**
+
+Es el **punto medio de cada intervalo**.
+
+$$
+X_i = \frac{L_i + L_s}{2}
+$$
+
+donde:
+
+-   ($L_i$) = límite inferior
+-   ($L_s$) = límite superior
+
+**Importancia de la distribución de frecuencias**
+
+Las distribuciones de frecuencias permiten:
+
+-   Organizar grandes cantidades de datos.
+
+-   Identificar **tendencias y patrones**.
+
+-   Facilitar la **construcción de gráficos estadísticos** (histogramas, polígonos de frecuencia, ojivas).
+
+-   Servir de base para el cálculo de **medidas estadísticas** como:
+
+    -   media
+    -   mediana
+    -   moda
+    -   varianza
+    -   desviación estándar.
+
+# .Bajar el Dataset
+
+[Base de datos DEPORTES](https://docs.google.com/spreadsheets/d/1NrQljQ4JYA3FtnALVS8XXgNVecARQSs1/edit?gid=2053417641#gid=2053417641)
+
+# .Leer el Dataset
+
+```{r}
+deporte <- read_excel("deporte.xlsx")
+```
+
+# .Conocer el Dataset
+
+-   Mostrar algunas filas del Dataset
+
+```{r}
+head(deporte)
+```
+
+-   Numero de variables
+
+```{r}
+deporte %>% names %>% length()
+```
+
+-   Nombre de las variables
+
+```{r}
+names(deporte)
+```
+
+-   Estructura de las variables
+
+```{r}
+glimpse(deporte)
+```
+
+-   Transformar las variables
+
+```{r}
+
+deporte$GENERO <- as.factor(deporte$GENERO)
+deporte$ESCOLARIDAD <- as.factor(deporte$ESCOLARIDAD)
+
+deporte$DEPORTE <- factor(deporte$DEPORTE, 
+                        levels = c("Fútbol", "Voleibol", "Gimnasia" , "Atletismo" , "Baloncesto" , "Tenis" , "Natación"), ordered = TRUE)
+
+
+deporte$DESEMPEÑO <- factor(deporte$DESEMPEÑO, 
+                         levels = c("Bajo", "Medio", "Alto"), ordered = TRUE)
+
+```
+
+-   Nueva estructura de las variables
+
+```{r}
+glimpse(deporte)
+```
+
+# .Tablas y Graficas
+
+## .Variable Nominal
+
+::: callout-warning
+## La variable nominal tiene solo frecuencia absoluta, relativa y porcentaje
+:::
+
+**Tabla No 1: Análisis de frecuencias del genero de los deportistas**
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Crear la tabla original
+tabla <- tibble(Genero = deporte$GENERO) %>% 
+  group_by(Genero) %>% 
+  summarise(fi = n()) %>%
+  mutate(
+    hi = round(fi/sum(fi), 4), 
+    Porcentaje = paste0(hi*100, "%"),)
+
+# Convertir las columnas a character para evitar conflictos
+tabla <- tabla %>% mutate(
+  Genero = as.character(Genero))
+
+# Añadir la fila de totales
+totales <- tibble(
+  Genero = "Total",
+  fi = sum(tabla$fi),
+  hi = round(sum(tabla$hi), 4),
+  Porcentaje = paste0(round(sum(tabla$hi) * 100, 2), "%"))
+
+# Combinar la tabla con los totales
+tabla_final <- bind_rows(tabla, totales)
+
+# Mostrar la tabla final con kable
+tabla_final %>% 
+  knitr::kable(
+    col.names = c("Genero", "$f_i$", "$h_i$", "Porcentaje"), 
+    align = c("l", "c", "c", "c"))
+```
+
+## Barras
+
+```{r}
+# Cargar las librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(readxl)
+
+
+# Calcular los porcentajes de cada categoría en la variable ESTADO
+genero_counts <- deporte %>%
+  dplyr::count(GENERO) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+# Crear el diagrama de barras
+ggplot(genero_counts, aes(x = GENERO, y = porcentaje, fill = GENERO)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Distribución porcentual del genero de los deportistas", 
+       x = "Genero", 
+       y = "Porcentaje") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_text(aes(label = sprintf("%.1f%%", porcentaje)), 
+            vjust = -0.5, 
+            color = "black", 
+            size = 3.5)
+```
+
+## Sectores
+
+```{r}
+# Cargar las librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(readxl)
+
+
+
+# Calcular los porcentajes de cada categoría en la variable ESTADO
+genero_counts <- deporte %>%
+  dplyr::count(GENERO) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+# Crear el diagrama circular
+ggplot(genero_counts, aes(x = "", y = porcentaje, fill = GENERO)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  labs(title = "Distribución porcentual del genero de los deportistas") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        panel.grid = element_blank(),
+        axis.text.x = element_blank()) +
+  geom_text(aes(label = sprintf("%.1f%%", porcentaje)), 
+            position = position_stack(vjust = 0.5), 
+            color = "white", 
+            size = 4)
+```
+
+## Interpretación
+
+La tabla presenta la distribución de la variable género en una muestra de **200** participantes, donde el 53.5% (107 individuos) corresponde al género **masculino** y el 46.5% (93 individuos) al género **femenino**, evidenciando una ligera predominancia del género **masculino**; sin embargo, la diferencia no es amplia, lo que indica una distribución relativamente equilibrada entre ambos grupos y permite considerar que la muestra es adecuada para realizar comparaciones sin un sesgo significativo por género.
+:::
+
+<br>
+
+**Tabla No 2: Análisis de frecuencias del deporte**
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Crear la tabla original
+tabla <- tibble(Deporte = deporte$DEPORTE) %>% 
+  group_by(Deporte) %>% 
+  summarise(fi = n()) %>%
+  mutate(
+    hi = round(fi/sum(fi), 4), 
+    Porcentaje = paste0(hi*100, "%"),)
+
+# Convertir las columnas a character para evitar conflictos
+tabla <- tabla %>% mutate(
+  Deporte = as.character(Deporte))
+
+# Añadir la fila de totales
+totales <- tibble(
+  Deporte = "Total",
+  fi = sum(tabla$fi),
+  hi = round(sum(tabla$hi), 4),
+  Porcentaje = paste0(round(sum(tabla$hi) * 100, 2), "%"))
+
+# Combinar la tabla con los totales
+tabla_final <- bind_rows(tabla, totales)
+
+# Mostrar la tabla final con kable
+tabla_final %>% 
+  knitr::kable(
+    col.names = c("Deporte", "$f_i$", "$h_i$", "Porcentaje"), 
+    align = c("l", "c", "c", "c"))
+```
+
+## Barras
+
+```{r}
+# Cargar las librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(readxl)
+
+
+# Calcular los porcentajes de cada categoría en la variable ESTADO
+deporte_counts <- deporte %>%
+  dplyr::count(DEPORTE) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+# Crear el diagrama de barras
+ggplot(deporte_counts, aes(x = DEPORTE, y = porcentaje, fill = DEPORTE)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Distribución porcentual del deporte", 
+       x = "Deporte", 
+       y = "Porcentaje") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_text(aes(label = sprintf("%.1f%%", porcentaje)), 
+            vjust = -0.5, 
+            color = "black", 
+            size = 3.5)
+```
+
+## Sectores
+
+```{r}
+# Cargar las librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(readxl)
+
+
+
+# Calcular los porcentajes de cada categoría en la variable ESTADO
+deporte_counts <- deporte %>%
+  dplyr::count(DEPORTE) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+# Crear el diagrama circular
+ggplot(deporte_counts, aes(x = "", y = porcentaje, fill = DEPORTE)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  labs(title = "Distribución porcentual del deporte") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        panel.grid = element_blank(),
+        axis.text.x = element_blank()) +
+  geom_text(aes(label = sprintf("%.1f%%", porcentaje)), 
+            position = position_stack(vjust = 0.5), 
+            color = "white", 
+            size = 4)
+```
+
+## Interpretación
+
+La tabla presenta la distribución de los **deportes** practicados por los 200 participantes, evidenciando que el **baloncesto** es el deporte con **mayor** frecuencia (18%), seguido de la **natación** (16%) y el **fútbol** (15.5%), mientras que **voleibol** (14%), **gimnasia** (13%) y **atletismo** (12.5%) muestran proporciones intermedias, y el **tenis** registra la menor participación (11%); en general, se observa una distribución relativamente equilibrada entre las distintas disciplinas, sin concentraciones excesivas en un solo deporte, lo que sugiere diversidad en las prácticas deportivas de la muestra.
+:::
+
+<br>
+
+## .Variable Ordinal
+
+::: callout-tip
+## La variable ordinal tiene los cuatro tipos de frecuencias
+:::
+
+**Tabla No 1: Distribución de frecuencias de la escolaridad de los deportistas**
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Crear la tabla original
+tabla <- tibble(Escolaridad = deporte$ESCOLARIDAD) %>% 
+  group_by(Escolaridad) %>% 
+  summarise(fi = n()) %>%
+  mutate(
+    hi = round(fi/sum(fi), 4), 
+    Porcentaje = paste0(hi*100, "%"),
+    Fi = cumsum(fi),
+    Hi = cumsum(hi)
+  )
+
+# Convertir las columnas Fucion, Fi, y Hi a character para evitar conflictos
+tabla <- tabla %>% mutate(
+  Escolaridad = as.character(Escolaridad),
+  Fi = as.character(Fi),
+  Hi = as.character(Hi)
+)
+
+# Añadir la fila de totales, dejando Fi y Hi vacíos
+totales <- tibble(
+  Escolaridad = "Total",
+  fi = sum(tabla$fi),
+  hi = round(sum(tabla$hi), 4),
+  Porcentaje = paste0(round(sum(tabla$hi) * 100, 2), "%"),
+  Fi = "",  # Puedes dejar en blanco o usar un valor numérico
+  Hi = ""   # Puedes dejar en blanco o usar un valor numérico
+)
+
+# Combinar la tabla con los totales
+tabla_final <- bind_rows(tabla, totales)
+
+# Mostrar la tabla final con kable
+tabla_final %>% 
+  knitr::kable(
+    col.names = c("Escolaridad", "fi", "hi", "Porcentaje", "Fi", "Hi"), 
+    align = c("l", "c", "c", "c", "c", "c")
+  )
+```
+
+## Barras
+
+```{r}
+# Cargar las librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(readxl)
+
+
+# Calcular los porcentajes de cada categoría en la variable ESTADO
+escolaridad_counts <- deporte %>%
+  dplyr::count(ESCOLARIDAD) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+# Crear el diagrama de barras
+ggplot(escolaridad_counts, aes(x = ESCOLARIDAD, y = porcentaje, fill = ESCOLARIDAD)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Distribución porcentual de la escolaridad", 
+       x = "Escolaridad", 
+       y = "Porcentaje") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_text(aes(label = sprintf("%.1f%%", porcentaje)), 
+            vjust = -0.5, 
+            color = "black", 
+            size = 3.5)
+```
+
+## Interpretación
+
+La tabla muestra la distribución del nivel de escolaridad en una muestra de **200** participantes, donde el **posgrado** presenta la mayor proporción (28%), seguido del **pregrado** (26.5%), **secundaria** (23.5%) y **primaria** (22%); esto evidencia que la mayoría de los individuos se concentra en niveles educativos **superiores**, aunque las diferencias entre categorías no son muy amplias, lo que indica una distribución relativamente equilibrada. Asimismo, las frecuencias acumuladas reflejan que más de la mitad de la muestra (54.5%) alcanza al menos el nivel de pregrado, lo que sugiere un nivel educativo general medio-alto dentro de la población analizada.
+:::
+
+**Tabla No 2: Distribución de frecuencias de el desempeño de los deportistas**
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Crear la tabla original
+tabla <- tibble(Desempeño = deporte$DESEMPEÑO) %>% 
+  group_by(Desempeño) %>% 
+  summarise(fi = n()) %>%
+  mutate(
+    hi = round(fi/sum(fi), 4), 
+    Porcentaje = paste0(hi*100, "%"),
+    Fi = cumsum(fi),
+    Hi = cumsum(hi)
+  )
+
+# Convertir las columnas Fucion, Fi, y Hi a character para evitar conflictos
+tabla <- tabla %>% mutate(
+  Desempeño = as.character(Desempeño),
+  Fi = as.character(Fi),
+  Hi = as.character(Hi)
+)
+
+# Añadir la fila de totales, dejando Fi y Hi vacíos
+totales <- tibble(
+  Desempeño = "Total",
+  fi = sum(tabla$fi),
+  hi = round(sum(tabla$hi), 4),
+  Porcentaje = paste0(round(sum(tabla$hi) * 100, 2), "%"),
+  Fi = "",  # Puedes dejar en blanco o usar un valor numérico
+  Hi = ""   # Puedes dejar en blanco o usar un valor numérico
+)
+
+# Combinar la tabla con los totales
+tabla_final <- bind_rows(tabla, totales)
+
+# Mostrar la tabla final con kable
+tabla_final %>% 
+  knitr::kable(
+    col.names = c("Desempeño", "fi", "hi", "Porcentaje", "Fi", "Hi"), 
+    align = c("l", "c", "c", "c", "c", "c")
+  )
+```
+
+## Barras
+
+```{r}
+# Cargar las librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(readxl)
+
+
+# Calcular los porcentajes de cada categoría en la variable ESTADO
+desempeño_counts <- deporte %>%
+  dplyr::count(DESEMPEÑO) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+# Crear el diagrama de barras
+ggplot(desempeño_counts, aes(x = DESEMPEÑO, y = porcentaje, fill = DESEMPEÑO)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Distribución porcentual de el desempeño de los deportistas", 
+       x = "Desempeño", 
+       y = "Porcentaje") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  geom_text(aes(label = sprintf("%.1f%%", porcentaje)), 
+            vjust = -0.5, 
+            color = "black", 
+            size = 3.5)
+```
+
+## Interpretación
+
+El análisis descriptivo de la muestra ($n = 200$) revela una distribución relativamente equitativa entre los niveles de desempeño, con una ligera prevalencia del nivel **Alto** (36%) sobre los niveles **Bajo** (33.5%) y **Medio** (30.5%). No obstante, el dato acumulado indica que el 64% de los evaluados se sitúa en los rangos inferior y medio, lo que evidencia que la mayoría de la población de estudio aún no alcanza los estándares óptimos de desempeño, sugiriendo un área de oportunidad significativa para intervenciones institucionales.
+:::
+
+## .Variable Discreta
+
+::: callout-warning
+## La variable discreta tiene los cuatro tipos de frecuencias
+:::
+
+**Distribución de frecuencias de la edad de los deportistas**
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Crear la tabla original
+tabla <- tibble(Edad = deporte$EDAD) %>% 
+  group_by(Edad) %>% 
+  summarise(fi = n()) %>%
+  mutate(
+    hi = round(fi/sum(fi), 4), 
+    Porcentaje = paste0(hi*100, "%"),
+    Fi = cumsum(fi),
+    Hi = cumsum(hi)
+  )
+
+# Convertir las columnas Personas, Fi, y Hi a character para evitar conflictos
+tabla <- tabla %>% mutate(
+  Edad = as.character(Edad),
+  Fi = as.character(Fi),
+  Hi = as.character(Hi)
+)
+
+# Añadir la fila de totales, dejando Fi y Hi vacíos
+totales <- tibble(
+  Edad = "Total",
+  fi = sum(tabla$fi),
+  hi = round(sum(tabla$hi), 2),
+  Porcentaje = paste0(round(sum(tabla$hi) * 100, 2), "%"),
+  Fi = "",  # Puedes dejar en blanco o usar un valor numérico
+  Hi = ""   # Puedes dejar en blanco o usar un valor numérico
+)
+
+# Combinar la tabla con los totales
+tabla_final <- bind_rows(tabla, totales)
+
+# Mostrar la tabla final con kable
+tabla_final %>% 
+  knitr::kable(
+    col.names = c("Edad", "fi", "hi", "Porcentaje", "Fi", "Hi"), 
+    align = c("l", "r", "r", "r", "r", "r")
+  )
+
+```
+
+## Bastones
+
+```{r}
+# valores de la variable
+x <- c(18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60)
+# f.m.p.
+fx <- c(0.020, 0.010, 0.020, 0.025, 0.020, 0.015, 0.010, 0.015, 0.035, 0.035, 0.020, 0.015, 0.020, 0.015, 0.030, 0.030, 0.030, 0.025, 0.015, 0.015, 0.030, 0.030, 0.025, 0.010, 0.040, 0.020, 0.025, 0.015, 0.040, 0.035, 0.015, 0.045, 0.030, 0.010, 0.015, 0.025, 0.040, 0.025, 0.010, 0.020, 0.025, 0.025, 0.025)
+
+# Crear un dataframe con los datos
+df <- data.frame(x = x, fx = fx)
+
+# Gráfico con ggplot2
+ggplot(df, aes(x = x, y = fx)) +
+  geom_point(shape = 18, color = "red") +
+  geom_segment(aes(xend = x, yend = 0), size = 1, color = "blue") +
+  labs(x = "Edad", y = "Porcentaje", title = "Diagrama  de bastones") +
+  theme_minimal() +
+  geom_text(aes(label = fx), vjust = -0.5)
+```
+
+## Escalonado
+
+```{r}
+# Cargar librerías
+library(ggplot2)
+library(tibble)
+
+# Crear datos
+df <- tibble(
+  x = c(18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60),
+  
+  Hi = c(0.02, 0.03, 0.05, 0.075, 0.095, 0.11, 0.12, 0.135, 0.17, 0.205, 0.225, 0.24, 0.26, 0.275, 0.305, 0.335, 0.365, 0.39, 0.405, 0.42, 0.45, 0.48, 0.505, 0.515, 0.555, 0.575, 0.6, 0.615, 0.655, 0.69, 0.705, 0.75, 0.78, 0.79, 0.805, 0.83, 0.87, 0.895, 0.905, 0.925, 0.95, 0.975, 1)
+)
+
+# Gráfica de función de distribución acumulada
+ggplot(df, aes(x = x, y = Hi)) +
+  geom_step(color = "#2C3E50", size = 1.2) +        # línea escalonada (CDF)
+  geom_point(color = "#E74C3C", size = 3) +         # puntos
+  scale_x_continuous(breaks = df$x, limits = c(7, 22)) +
+  scale_y_continuous(limits = c(0, 1)) +
+  labs(
+    title = "Función de Distribución Acumulada (FDA)",
+    x = "Variable",
+    y = "Frecuencia relativa acumulada (Hi)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Interpretación
+
+La caracterización demográfica de la muestra ($n = 200$) revela una alta dispersión etaria en un rango comprendido entre los **18 y 60 años**, sin que se observe una concentración dominante en una sola edad específica. No obstante, se identifica que la edad con mayor frecuencia es de **49 años** (4.5%), seguida por los **42, 46 y 54 años** con un 4% respectivamente, lo que sugiere una ligera tendencia hacia la madurez en la población de estudio. Desde una perspectiva acumulada, se destaca que el 50.5% de los participantes tiene **40 años o menos** ($H_i = 0.505$), lo que evidencia una distribución equilibrada entre adultos jóvenes y adultos en etapa de madurez, garantizando una representatividad generacional diversa para los fines de la investigación.
+:::
+
+<br>
+
+## .Variable Continua
+
+::: callout-important
+## La variable continua se tabula con intervalos
+:::
+
+<br>
+
+**Generación de intervalos**
+
+::: panel-tabset
+## Mínimo
+
+```{r}
+Min <- min(deporte$EDAD)
+Min
+```
+
+## Máximo
+
+```{r}
+Max <- max(deporte$EDAD)
+Max
+```
+
+## Rango
+
+```{r}
+R <- Max-Min
+R
+
+```
+
+## Intervalos
+
+```{r}
+m <- ceiling(1 + 3.322*log10(nrow(deporte)))
+m
+
+```
+
+## Amplitud
+
+```{r}
+A <- ceiling((R/m) * 1) / 1
+A
+```
+
+## Rango corregido
+
+```{r}
+RC <- A*m
+RC
+```
+:::
+
+::: callout-caution
+## La amplitud debe tener tanto decimales como lo tienen los datos originales. Si tiene un decimal la fórmula se multiplica y se divide por 10. Si tiene dos decimales la fórmula se multiplica y se divide por 100 y así sucesivamente
+:::
+
+::: panel-tabset
+## Diferencia
+
+```{r}
+D <- RC-R
+D
+```
+
+## Mínimo corregido
+
+```{r}
+Xmin <- Min-4
+Xmin
+```
+
+## Máximo corregido
+
+```{r}
+Xmax <- Max+4
+Xmax
+```
+:::
+
+::: callout-important
+## La diferencia se debe dividir en dos números lo más equitativos de tal manera que estos números tengan tantos decimales como los datos originales. Al mínimo se le resta uno de los números y al máximo se le suma el otro
+:::
+
+<br>
+
+**Distribución de frecuencias de la edad de los deportistas**
+
+::: panel-tabset
+## Tabla
+
+```{r}
+library(dplyr)
+library(kableExtra)
+
+m1 <- (Xmin+(Xmin+A))/2
+
+interv = cut(x = deporte$EDAD, breaks = seq(Xmin, Xmax, by = A), include.lowest = TRUE)
+
+tabla <- tibble(Edad = interv) %>% 
+  group_by(Edad) %>% 
+  summarise(fi = n()) %>% 
+  mutate(hi = fi / sum(fi)) %>% 
+  mutate(
+    mi = seq(from = m1, by = A, length.out = nrow(.)) %>% as.character(), # Convertir `mi` a carácter
+    Fi = cumsum(fi) %>% as.character(),                   # Convertir `Fi` a carácter
+    Hi = cumsum(fi / sum(fi)) %>% as.character()          # Convertir `Hi` a carácter
+  ) %>% 
+  relocate(Edad, mi, fi)
+  
+
+# Agregar la fila total con casillas en blanco
+tabla <- tabla %>% 
+  add_row(Edad = "Total", mi = "", fi = sum(tabla$fi), hi = sum(tabla$hi), Fi = "", Hi = "")
+
+# Generar la tabla con knitr::kable y agregar título
+tabla %>% 
+  knitr::kable(
+    col.names = c("Edad", "mi", "fi", "hi", "Fi", "Hi"), 
+    align = c("l", "r", "r", "r", "r", "r")
+  ) %>% 
+  kableExtra::kable_styling(full_width = FALSE) %>% 
+  kableExtra::add_header_above(c("Distribuciones de frecuencias para la variable Edad" = 6))
+```
+
+## Histograma
+
+```{r}
+library(ggplot2)
+
+# Crear el dataframe manualmente (según tu tabla)
+edad <- data.frame(
+  li = c(14, 19, 24, 29, 34, 39, 44, 49, 54, 59),
+  ls = c(19, 24, 29, 34, 39, 44, 49, 54, 59, 64),
+  mi = c(16.5, 21.5, 26.5, 31.5, 36.5, 41.5, 46.5, 51.5, 56.5, 61.5),
+  fi = c(6, 18, 24, 25, 23, 24, 30, 24, 21, 5)
+)
+
+# Graficar histograma (usando geom_col porque son datos agrupados)
+ggplot(edad, aes(x = mi, y = fi)) +
+  geom_col(width = 5, fill = "steelblue", color = "black") +
+  labs(
+    title = "Histograma de la edad de los deportistas",
+    x = "Edad",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+
+## Ojiva
+
+```{r}
+library(ggplot2)
+
+# Crear el dataframe según tu tabla
+edad <- data.frame(
+  li = c(14, 19, 24, 29, 34, 39, 44, 49, 54, 59),
+  ls = c(19, 24, 29, 34, 39, 44, 49, 54, 59, 64),
+  Hi = c(0.03, 0.12, 0.24, 0.365, 0.48, 0.6, 0.75, 0.87, 0.975, 1)
+)
+
+# Graficar la ojiva
+ggplot(edad, aes(x = ls, y = Hi)) +
+  geom_line(color = "blue", size = 1) +
+  geom_point(color = "red", size = 2) +
+  labs(
+    title = "Ojiva de la edad de los deportistas",
+    x = "Edad (límite superior del intervalo)",
+    y = "Frecuencia acumulada relativa"
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal()
+```
+
+## Densidad
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Datos agrupados
+edad <- data.frame(
+  mi = c(16.5, 21.5, 26.5, 31.5, 36.5, 41.5, 46.5, 51.5, 56.5, 61.5),
+  fi = c(6, 18, 24, 25, 23, 24, 30, 24, 21, 5)
+)
+
+# Expandir los datos (aproximación)
+edad_expandida <- edad %>%
+  slice(rep(1:n(), fi))
+
+# Gráfico de densidad
+ggplot(edad_expandida, aes(x = mi)) +
+  geom_density(fill = "steelblue", alpha = 0.5, size = 1) +
+  labs(
+    title = "Densidad de la edad de los deportistas",
+    x = "Edad",
+    y = "Densidad"
+  ) +
+  theme_minimal()
+```
+
+## Interpretación
+
+La distribución etaria de la muestra ($n = 200$) evidencia una notable concentración de participantes en la etapa de madurez, destacando el intervalo de **44 a 49 años** como el de mayor prevalencia con el 15% ($f_i = 30$) de la población total. Asimismo, se observa una representatividad significativa y constante en los rangos intermedios entre los \***24 y 54 años**, donde las frecuencias relativas oscilan alrededor del 12% por cada grupo decenal. En términos acumulados, el 60% de los individuos evaluados tiene **44 años o menos** ($H_i = 0.60$), mientras que los extremos generacionales **(menores de 19 y mayores de 59 años)** presentan la menor participación con apenas un 3% y 2.5% respectivamente, lo cual delimita el perfil predominante del estudio como una población adulta activa con una baja presencia de jóvenes y adultos mayores.
+:::
+
+## .Tablas de contingencia
+
+::: panel-tabset
+## Absolutas
+
+```{r}
+# Cargar las bibliotecas necesarias
+library(dplyr)
+library(readxl)
+library(kableExtra)
+
+
+
+# Crear una tabla de contingencia con EDUCACION y ESTRATO
+table_ESCOLARIDAD_DEPORTE <- table(deporte$ESCOLARIDAD, deporte$ESCOLARIDAD)
+
+# Convertir la tabla a un data frame para facilitar el manejo de datos
+table_df <- as.data.frame.matrix(table_ESCOLARIDAD_DEPORTE)
+
+# Calcular los totales de frecuencia absoluta (Total)
+table_df$Total <- rowSums(table_df)  # Totales por fila
+total_fi <- sum(table_df$Total)      # Total general
+
+# Añadir una fila de totales al final de la tabla
+table_df <- rbind(table_df, Total = c(colSums(table_ESCOLARIDAD_DEPORTE), total_fi))
+
+# Mostrar la tabla con kableExtra, aplicando color solo a la fila de Totales
+table_df %>%
+  kable("html", caption = "Tabla de Frecuencias absolutas de ESCOLARIDAD vs DEPORTE de los deportistas") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                full_width = F, position = "center") %>%
+  row_spec(nrow(table_df), bold = T, color = "white", background = "darkblue")  # Resaltar solo la fila de Totales
+```
+
+<br>
+
+## Relativas
+
+```{r}
+# Cargar las bibliotecas necesarias
+library(dplyr)
+library(readxl)
+library(kableExtra)
+
+
+# Crear una tabla de contingencia con FUNCION y ESTRATO
+table_ESCOLARIDAD_DEPORTE <- table(deporte$ESCOLARIDAD, deporte$DEPORTE)
+
+# Convertir la tabla a un data frame para facilitar el manejo de datos
+table_df <- as.data.frame.matrix(table_ESCOLARIDAD_DEPORTE)
+
+# Calcular el total general para las frecuencias relativas
+total_fi <- sum(table_df)  # Total general para todas las celdas
+
+# Calcular las frecuencias relativas
+table_df <- table_df / total_fi  # Dividir cada valor por el total general para obtener la frecuencia relativa
+
+# Calcular los totales de frecuencia relativa por fila y columna
+table_df$Total <- rowSums(table_df)  # Totales por fila (frecuencias relativas)
+total_column <- colSums(table_df)  # Totales por columna (frecuencias relativas)
+
+# Añadir una fila de totales al final de la tabla
+table_df <- rbind(table_df, Total = total_column)
+
+# Mostrar la tabla con kableExtra, aplicando color solo a la fila de Totales
+table_df %>%
+  kable("html", caption = "Tabla de Frecuencias Relativas de ESCOLARIDAD vs DEPORTE de los deportistas") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                full_width = F, position = "center") %>%
+  row_spec(nrow(table_df), bold = T, color = "white", background = "darkblue")  # Resaltar solo la fila de Totales
+```
+
+## Conjuntas
+
+```{r}
+# Cargar las librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(readxl)
+
+# Calcular los porcentajes de cada categoría de ESTRATO dentro de cada ESTADO
+data_porcentaje <- deporte %>%
+  count(PESO, ESTATURA) %>%
+  group_by(PESO) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+# Crear el diagrama de barras conjuntas con porcentajes
+ggplot(data_porcentaje, aes(x = PESO, y = porcentaje, fill = ESTATURA)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Usar "stack" si deseas barras apiladas
+  labs(title = "Distribución porcentual de Peso por Estatura",
+       x = "Peso",
+       y = "Porcentaje",
+       fill = "Estatura") +
+  theme_minimal() +
+  geom_text(aes(label = sprintf("%.1f%%", porcentaje)), 
+            position = position_dodge(0.9), 
+            vjust = -0.5, 
+            size = 3)
+```
+
+## Apiladas_1
+
+```{r}
+# Cargar las librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(readxl)
+
+
+# Calcular los porcentajes de cada categoría de ESTRATO dentro de cada ESTADO
+data_porcentaje <- deporte %>%
+  count(CINTURA, CADERA) %>%
+  group_by(CINTURA) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+# Crear el diagrama de barras apiladas con porcentajes
+ggplot(data_porcentaje, aes(x = CINTURA, y = porcentaje, fill = CADERA)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Distribución porcentual de Cintura por Cadera",
+       x = "Cintura",
+       y = "Porcentaje",
+       fill = "Cadera") +
+  theme_minimal() +
+  geom_text(aes(label = sprintf("%.1f%%", porcentaje)), 
+            position = position_stack(vjust = 0.5), 
+            color = "white",
+            size = 3)
+```
+
+## Interpretación
+
+El análisis bivariado de las frecuencias relativas evidencia que el nivel de Posgrado es el de mayor representatividad en la muestra con un 28% del total, mostrando una distribución de prácticas deportivas notablemente homogénea entre sus integrantes. En cuanto a las preferencias disciplinarias de la población general, el **Baloncesto** destaca como el deporte más practicado con un 18%, impulsado principalmente por los sujetos con nivel de **Pregrado** (7%). Por el contrario, el Tenis registra la menor participación global con un 11%, concentrándose mínimamente en el sector de nivel **superior**. En conjunto, los datos sugieren que, a medida que aumenta el nivel de escolaridad (Posgrado y Pregrado, sumando un 54.5%), existe una tendencia a la diversificación de actividades físicas, mientras que en los niveles de **Primaria y Secundaria** se observa una mayor polarización hacia deportes específicos como el **Baloncesto y la Natación**, respectivamente.
+:::
