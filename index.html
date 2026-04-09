@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="index_files/libs/clipboard/clipboard.min.js"></script>
@@ -249,7 +269,7 @@ window.Quarto = {
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">ipak</span>(packages)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p><span class="citation" data-cites="tidyverse kableExtra psych readxl">[@tidyverse; @kableExtra; @psych; @readxl]</span></p>
+<p><span class="citation" data-cites="tidyverse readxl psych kableExtra">(<a href="#ref-tidyverse" role="doc-biblioref">Wickham et&nbsp;al. 2019</a>; <a href="#ref-readxl" role="doc-biblioref">Wickham y Bryan 2025</a>; <a href="#ref-psych" role="doc-biblioref">2026</a>; <a href="#ref-kableExtra" role="doc-biblioref">Zhu 2024</a>)</span></p>
 </section>
 <section id="introduccion" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> .Introduccion</h1>
@@ -2386,10 +2406,24 @@ Distribuciones de frecuencias para la variable Edad
 </div>
 </div>
 </div>
+
 </section>
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-tidyverse" class="csl-entry" role="listitem">
+Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et&nbsp;al. 2019. <span>«Welcome to the <span></span>tidyverse<span></span>»</span> 4: 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+</div>
+<div id="ref-readxl" class="csl-entry" role="listitem">
+Wickham, Hadley, y Jennifer Bryan. 2025. <span>«readxl: Read Excel Files»</span>. <a href="https://doi.org/10.32614/CRAN.package.readxl">https://doi.org/10.32614/CRAN.package.readxl</a>.
+</div>
+<div id="ref-psych" class="csl-entry" role="listitem">
+William Revelle. 2026. <span>«psych: Procedures for Psychological, Psychometric, and Personality Research»</span>. <a href="https://CRAN.R-project.org/package=psych">https://CRAN.R-project.org/package=psych</a>.
+</div>
+<div id="ref-kableExtra" class="csl-entry" role="listitem">
+Zhu, Hao. 2024. <span>«kableExtra: Construct Complex Table with ’kable’ and Pipe Syntax»</span>. <a href="https://doi.org/10.32614/CRAN.package.kableExtra">https://doi.org/10.32614/CRAN.package.kableExtra</a>.
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

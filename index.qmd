@@ -41,6 +41,7 @@ knitr:
     fig.width: 6  # Ajusta el tamaño de las figuras a 6 unidades
     fig.height: 6  # Ajusta la altura de las figuras a 6 unidades
     out.width: "70%"  # Asegura que las figuras se adapten al 70% del ancho disponible
+bibliography: references.bib
 ---
 
 ```{=html}
@@ -94,8 +95,7 @@ ipak(packages)
 
 ```
 
-[@tidyverse; @kableExtra; @psych; @readxl]
-
+[@tidyverse; @readxl; @psych; @kableExtra]
 
 # .Introduccion
 
